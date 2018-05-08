@@ -1,20 +1,48 @@
 " 
 " THIS MUST COME FIRST:
-" :map <space> <leader>  
-let mapleader = "\<Space>"
+map <SPACE> <leader>
+" let mapleader = "\<Space>"
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>n :tabe<cr>
+
+au TabLeave * let g:lasttab = tabpagenr()
+nnoremap <leader>` :exe "tabn ".g:lasttab<cr>
+vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
+
+" character limit
+:set synmaxcol=160
+
+" remap ctag so it lists options if there are multiple matches
+nnoremap <C-]> g<C-]>
 
 
+" windows spliting
 
+:nmap <leader>v :vsplit<enter>:FZF -i<enter>
+:nmap <leader>h :split<enter>:FZF -i<enter>
 
+" NERDTree mapping
 
-
-
-
-
+:nmap <leader>t :NERDTreeFind<enter> <C-h>
 
 
 " map :FZF binding
+
 :nmap <leader>f :FZF -i<enter>
+
+
+"line indentation markers
+" let g:indentLine_setColors = 0
 
 " use jj as eskape key
 :imap jk <Esc>
@@ -67,7 +95,7 @@ autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 set title
 
 " file  path always visible
-set statusline+=%F
+set statusline=%t
 
 " Configure tab spaces
 filetype plugin indent on
@@ -78,6 +106,12 @@ set backspace=indent,eol,start
 
 " Line Numbers always on
 set number
+" set number relativenumber
+" augroup numbertoggle
+"  autocmd!
+"  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+"  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+"augroup END
 
 " Syntax highlight always on
 syntax on
@@ -113,12 +147,12 @@ Plugin 'tpope/vim-rails'
 
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'szw/vim-tags'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'vim-gitgutter'
 Plugin 'ruanyl/vim-gh-line'
-
+Plugin 'Yggdroot/indentLine'
 
 
 " The following are examples of different formats supported.
