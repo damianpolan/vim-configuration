@@ -19,12 +19,19 @@ au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 
+" neovim disable permanent search highlight
+:set nohlsearch
+
 " character limit
 :set synmaxcol=160
 
+" default copy buffer to system copy buffer
+:set clipboard=unnamedplus
+
 " remap ctag so it lists options if there are multiple matches
 nnoremap <C-]> g<C-]>
-
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " windows spliting
 
@@ -35,9 +42,17 @@ nnoremap <C-]> g<C-]>
 
 :nmap <leader>t :NERDTreeFind<enter> <C-h>
 
+" remap delete keys
+nnoremap d "_d
+nnoremap D "_D
+vnoremap d "_d
+xnoremap p "_dP
+
+
 
 " map :FZF binding
 
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 :nmap <leader>f :FZF -i<enter>
 
 
@@ -119,7 +134,7 @@ syntax on
 
 " Autostart NERDTree
 " autocmd vimenter * NERDTree
-
+let NERDTreeShowHidden=1
 
 
 " SETUP FOR VUNDLE
@@ -137,6 +152,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" TO INSTALL NEW PACKAGE: run :PluginInstall
 
 
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -153,7 +169,12 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'vim-gitgutter'
 Plugin 'ruanyl/vim-gh-line'
 Plugin 'Yggdroot/indentLine'
-
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
+Plugin 'vim-airline/vim-airline' 
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+let g:deoplete#enable_at_startup = 1
+noremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"<Paste>
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -204,7 +225,6 @@ filetype plugin indent on    " required
 " FZF - OPTIONS
 
 set rtp+=/usr/local/opt/fzf
-
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
