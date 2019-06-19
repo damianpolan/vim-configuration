@@ -1,5 +1,4 @@
-" NEOVIM
-
+" 
 " THIS MUST COME FIRST:
 map <SPACE> <leader>
 " let mapleader = "\<Space>"
@@ -25,6 +24,9 @@ vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 
 " character limit
 :set synmaxcol=160
+
+" default copy buffer to system copy buffer
+:set clipboard=unnamedplus
 
 " remap ctag so it lists options if there are multiple matches
 nnoremap <C-]> g<C-]>
@@ -158,6 +160,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'gabesoft/vim-ags'
 Plugin 'tpope/vim-rails'
+Plugin 'djoshea/vim-autoread' " Auto read files when they change
 
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
