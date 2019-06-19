@@ -1,0 +1,21 @@
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+printf "Loading aliases..."
+
+gitf() {
+  printf "${YELLOW} git push --force-with-lease origin ${RED}$1${NC}\n"
+  git push --force-with-lease origin $1
+}
+
+export GITHUB_TOKEN_CI_STATUS=80d1ae5df2c66471fccec43450217d47fa7b81d6
+rebase_last_green() {
+  printf "${YELLOW} git rebase $(~/Repos/shopify/script/ci_last_green_master) ${NC}\n"
+  git rebase $(~/Repos/shopify/script/ci_last_green_master)
+}
+
+
+alias add_rsa='ssh-add ~/.ssh/id_rsa &>/dev/null'
+
+printf "done.\n"
