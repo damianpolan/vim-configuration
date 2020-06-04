@@ -15,23 +15,40 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>n :tabe<cr>
 
+" remap annoying tab duplication command
+nnoremap <C-Bslash> ""
+
+" remap :W to :w when its accidentally sent
+:command! WQ wq
+:command! Wq wq
+:command! W w
+:command! Q q
+
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
+
+"leader + ] goto definition in new tab
+:nmap <leader>] <C-w><C-]><C-w>T
 
 " neovim disable permanent search highlight
 :set nohlsearch
 
 " character limit
-:set synmaxcol=160
+:set synmaxcol=120
 
 " default copy buffer to system copy buffer
 :set clipboard=unnamedplus
 
 " remap ctag so it lists options if there are multiple matches
 nnoremap <C-]> g<C-]>
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+" map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+" set break indent so that lines exceeding a certain character count will wrap
+" niceley
+:set breakindentopt=shift:2
+:set breakindent
 
 " windows spliting
 
@@ -47,14 +64,18 @@ nnoremap d "_d
 nnoremap D "_D
 vnoremap d "_d
 xnoremap p "_dP
-
-
+xnoremap P "_dp
+xnoremap s "_s
+nnoremap s "_s
 
 " map :FZF binding
 
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""' " allow search hidden files and folders
 :nmap <leader>f :FZF -i<enter>
+:nmap <leader>d :Lines<enter>
 
+" gbrowse
+:nmap <leader>i :.Gbrowse<enter>
 
 "line indentation markers
 " let g:indentLine_setColors = 0
@@ -67,7 +88,8 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 :set so=999
 
 " configure vim gitgutter https://stackoverflow.com/questions/6821033/vim-how-to-run-a-command-immediately-when-starting-vim
-autocmd VimEnter * GitGutterEnable
+"Has autocmd bug if no .git file exists.
+" autocmd VimEnter * GitGutterEnable 
 
 " map :FZF
 " nnoremap <C-P> :FZF<CR>
@@ -94,7 +116,7 @@ set splitright
 
 
 " Auto generate ctags (szw/vim-tags)
-let g:vim_tags_auto_generate = 1
+let g:vim_tags_auto_generate = 0
 
 " CTAGS:  https://blog.sensible.io/2014/05/09/supercharge-your-vim-into-ide-with-ctags.html
 
@@ -118,6 +140,11 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set backspace=indent,eol,start
+
+" Fixes bug where new tabs don't get indentation settings
+autocmd FileType * set tabstop=2 shiftwidth=2 expandtab backspace=indent,eol,start
+
+" autocmd BufReadCmd au_test echo 'EYY'
 
 " Line Numbers always on
 set number
@@ -161,20 +188,24 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'gabesoft/vim-ags'
 Plugin 'tpope/vim-rails'
 Plugin 'djoshea/vim-autoread' " Auto read files when they change
+Plugin 'mileszs/ack.vim'
 
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plugin 'Valloric/YouCompleteMe'
 Plugin 'szw/vim-tags'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'vim-gitgutter'
+" Plugin 'vim-gitgutter' " buggy when not a git repo
+Plugin 'mhinz/vim-signify' " replaces gitgutter
 Plugin 'ruanyl/vim-gh-line'
-Plugin 'Yggdroot/indentLine'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
+Plugin 'Yggdroot/indentLine' "thin vertical lines for indentation
+Plugin 'tpope/vim-fugitive' "Gbrowse
+Plugin 'tpope/vim-rhubarb' "enables Gbrowse
 Plugin 'vim-airline/vim-airline' 
-Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-let g:deoplete#enable_at_startup = 1
+
+"Plugin 'zxqfl/tabnine-vim' " AI autocompletion
+
+ Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+ let g:deoplete#enable_at_startup = 1
 noremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"<Paste>
 
 " The following are examples of different formats supported.
@@ -234,7 +265,9 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'down': '~60%' }
+" preview_window at top
+let g:fzf_preview_window = 'up:40%'
 
 " In Neovim, you can set up fzf window using a Vim command
 let g:fzf_layout = { 'window': 'enew' }
