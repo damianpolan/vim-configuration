@@ -3,6 +3,9 @@
 map <SPACE> <leader>
 " let mapleader = "\<Space>"
 
+"Always show vim tab
+:set showtabline=2
+
 " Go to tab by number
 noremap <leader>1 1gt
 noremap <leader>2 2gt
