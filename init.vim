@@ -18,6 +18,9 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 noremap <leader>n :tabe<cr>
 
+" Remove json conceal quotes as per https://stackoverflow.com/questions/40601818/vim-displays-json-file-without-any-quotes
+let g:indentLine_setConceal = 0
+
 " remap annoying tab duplication command
 nnoremap <C-Bslash> ""
 
@@ -70,11 +73,13 @@ xnoremap p "_dP
 xnoremap P "_dp
 xnoremap s "_s
 nnoremap s "_s
+nnoremap c "_c
+nnoremap C "_C
 
 " map :FZF binding
 
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""' " allow search hidden files and folders
-:nmap <leader>f :FZF -i<enter>
+let $FZF_DEFAULT_COMMAND = 'ag --ignore-case --hidden --ignore .git -l -g ""' " allow search hidden files and folders
+:nmap <leader>f :Files<enter>
 :nmap <leader>d :Lines<enter>
 
 " gbrowse
@@ -188,27 +193,33 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'gabesoft/vim-ags'
+"Plugin 'gabesoft/vim-ags'
 Plugin 'tpope/vim-rails'
 Plugin 'djoshea/vim-autoread' " Auto read files when they change
+
+" Silver searcher plugins:
 Plugin 'mileszs/ack.vim'
+"let g:ackprg = 'ag --nogroup --nocolor --column'
+"let g:ackprg = 'ag --vimgrep'
+"let g:ackprg = 'ag --ignore-case --hidden --ignore'
+
 
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'szw/vim-tags'
-Plugin 'terryma/vim-multiple-cursors'
+Plugin 'mg979/vim-visual-multi' " multi cursor
 " Plugin 'vim-gitgutter' " buggy when not a git repo
 Plugin 'mhinz/vim-signify' " replaces gitgutter
 Plugin 'ruanyl/vim-gh-line'
 Plugin 'Yggdroot/indentLine' "thin vertical lines for indentation
 Plugin 'tpope/vim-fugitive' "Gbrowse
 Plugin 'tpope/vim-rhubarb' "enables Gbrowse
-Plugin 'vim-airline/vim-airline' 
+Plugin 'vim-airline/vim-airline' "Status tabline at the bottom
 
 "Plugin 'zxqfl/tabnine-vim' " AI autocompletion
 
- Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
- let g:deoplete#enable_at_startup = 1
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+let g:deoplete#enable_at_startup = 1
 noremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"<Paste>
 
 " The following are examples of different formats supported.
@@ -237,7 +248,16 @@ noremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"<Paste>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
 filetype plugin indent on    " required
+filetype on
+filetype plugin on
+filetype indent on
+set autoindent
+set smartindent
+
+set nopaste " sometimes we unexpectedly enter paste mode, which stop deoplete and autoindent from working. This resets it
+
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -268,13 +288,13 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~60%' }
+"let g:fzf_layout = { 'down': '~60%' }
 " preview_window at top
-let g:fzf_preview_window = 'up:40%'
+"let g:fzf_preview_window = { 'up': '~40%' }
 
 " In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
+"let g:fzf_layout = { 'window': 'enew' }
+"let g:fzf_layout = { 'window': '-tabnew' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
