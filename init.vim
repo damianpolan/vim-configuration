@@ -34,6 +34,9 @@ au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 
+"mouse mode for resizing windows
+:set mouse=a
+
 "leader + ] goto definition in new tab
 :nmap <leader>] <C-w><C-]><C-w>T
 
@@ -66,20 +69,28 @@ map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 :nmap <leader>t :NERDTreeFind<enter> <C-h>
 
 " remap delete keys
-nnoremap d "_d
-nnoremap D "_D
-vnoremap d "_d
 xnoremap p "_dP
-xnoremap P "_dp
-xnoremap s "_s
+xnoremap P "_dP
+nnoremap dd "_dd
+nnoremap d "_d
+xnoremap d "_d
+nnoremap D "_D
+xnoremap D "_D
 nnoremap s "_s
+xnoremap s "_s
+nnoremap S "_S
+xnoremap S "_S
 nnoremap c "_c
+xnoremap c "_c
 nnoremap C "_C
+xnoremap C "_C
 
 " map :FZF binding
 
 let $FZF_DEFAULT_COMMAND = 'ag --ignore-case --hidden --ignore .git -l -g ""' " allow search hidden files and folders
-:nmap <leader>f :Files<enter>
+"let $FZF_DEFAULT_COMMAND = 'ack --ignore-case --ignore-directory .git -l ""'
+
+:nmap <leader>f :FZF<enter>
 :nmap <leader>d :Lines<enter>
 
 " gbrowse
@@ -140,7 +151,7 @@ autocmd BufEnter * let &titlestring = ' ' . expand("%:t")
 set title
 
 " file  path always visible
-set statusline=%t
+set statusline=%f
 
 " Configure tab spaces
 filetype plugin indent on
@@ -201,22 +212,31 @@ Plugin 'djoshea/vim-autoread' " Auto read files when they change
 Plugin 'mileszs/ack.vim'
 "let g:ackprg = 'ag --nogroup --nocolor --column'
 "let g:ackprg = 'ag --vimgrep'
-"let g:ackprg = 'ag --ignore-case --hidden --ignore'
+"let g:ackprg = 'ag --hidden --ignore'
+let g:ag_prg = 'ag --hidden --ignore'
+
+"Derek autocomplete:
+"nvim-compe, must have nvim 0.5. brew install --head neovim
 
 
 Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'szw/vim-tags'
 Plugin 'mg979/vim-visual-multi' " multi cursor
 " Plugin 'vim-gitgutter' " buggy when not a git repo
 Plugin 'mhinz/vim-signify' " replaces gitgutter
-Plugin 'ruanyl/vim-gh-line'
+Plugin 'ruanyl/vim-gh-line' "Open current line in github
 Plugin 'Yggdroot/indentLine' "thin vertical lines for indentation
 Plugin 'tpope/vim-fugitive' "Gbrowse
 Plugin 'tpope/vim-rhubarb' "enables Gbrowse
-Plugin 'vim-airline/vim-airline' "Status tabline at the bottom
 
-"Plugin 'zxqfl/tabnine-vim' " AI autocompletion
+" Removed because slow
+"Plugin 'vim-airline/vim-airline' "Status tabline at the bottom
+"let g:airline_extensions = []
+
+Plugin 'skwp/greplace.vim' "search and replace all files and folders
+set grepprg=git\ grep "Ignore .gitignore folders for Gsearch
+let g:grep_cmd_opts = '--line-number'
 
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 let g:deoplete#enable_at_startup = 1
