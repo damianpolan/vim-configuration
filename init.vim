@@ -88,9 +88,14 @@ xnoremap C "_C
 " map :FZF binding
 
 let $FZF_DEFAULT_COMMAND = 'ag --ignore-case --hidden --ignore .git -l -g ""' " allow search hidden files and folders
-"let $FZF_DEFAULT_COMMAND = 'ack --ignore-case --ignore-directory .git -l ""'
 
-:nmap <leader>f :FZF<enter>
+" the -i option here will ensure that the followup search will be case
+" insensitve. Allowing searches like "TimeoutMiddleware" to batch
+" timeout_middleware.rb
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, {'options': ['-i']}, <bang>0)
+
+:nmap <leader>f :Files<enter>
 :nmap <leader>d :Lines<enter>
 
 " gbrowse
@@ -219,8 +224,8 @@ let g:ag_prg = 'ag --hidden --ignore'
 "nvim-compe, must have nvim 0.5. brew install --head neovim
 
 
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
-"Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'szw/vim-tags'
 Plugin 'mg979/vim-visual-multi' " multi cursor
 " Plugin 'vim-gitgutter' " buggy when not a git repo
