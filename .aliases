@@ -5,17 +5,35 @@ NC='\033[0m' # No Color
 printf "Loading aliases..."
 
 gitf() {
-  printf "${YELLOW} git push --force-with-lease origin ${RED}$1${NC}\n"
-  git push --force-with-lease origin $1
+  local CURRENT_BRANCH="$1"
+  
+  if [ -v CURRENT_BRANCH ];then
+    printf "Automatically setting branch\n"
+    CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)";
+  fi
+
+  if [ $CURRENT_BRANCH = "master" ];then
+    printf "${RED}Push failed. Current branch cannot be master.\n" 
+  else
+    printf "${YELLOW}git push --force-with-lease origin ${RED}$CURRENT_BRANCH${NC}\n"
+    git push --force-with-lease origin $CURRENT_BRANCH 
+  fi
 }
 
-export GITHUB_TOKEN_CI_STATUS=80d1ae5df2c66471fccec43450217d47fa7b81d6
-rebase_last_green() {
-  printf "${YELLOW} git rebase $(~/Repos/shopify/script/ci_last_green_master) ${NC}\n"
-  git rebase $(~/Repos/shopify/script/ci_last_green_master)
+replace_all() {
+  GIT_DIR=./.git
+  if [ -d "$GIT_DIR" ]; then
+    ag -0 -l $1 | xargs -0 perl -pi -e "s/$1/$2/g"
+  else
+    ECHO "No .git directory found."
+    #  ag -0 -l $1 | xargs -0 perl -pi.bak -e "s/$1/$2/g"
+  fi
 }
 
 
 alias add_rsa='ssh-add ~/.ssh/id_rsa &>/dev/null'
+alias ctags=/usr/local/bin/ctags
+alias vim=nvim
 
 printf "done.\n"
+
