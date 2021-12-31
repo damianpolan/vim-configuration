@@ -36,12 +36,13 @@ vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 
 " Save vim session on quit
 " nmap SQ <ESC>:mksession! ~/vim/Session.vim<CR>:wqa<CR>
+" 
 " function! RestoreSession()
-"  if argc() == 0 "vim called without arguments
-"    execute 'source ~/.vim/Session.vim'
-"  end
-"endfunction
-"autocmd VimEnter * call RestoreSession()
+"   if argc() == 0 "vim called without arguments
+"     execute 'source ~/.vim/Session.vim'
+"   end
+" endfunction
+" autocmd VimEnter * call RestoreSession()
 
 "mouse mode for resizing windows
 :set mouse=a
@@ -53,7 +54,7 @@ vnoremap <leader>` :exe "tabn ".g:lasttab<cr>
 :set nohlsearch
 
 " character limit
-:set synmaxcol=120
+:set synmaxcol=3000
 
 " default copy buffer to system copy buffer
 :set clipboard=unnamedplus
@@ -104,11 +105,14 @@ let $FZF_DEFAULT_COMMAND = 'ag --ignore-case --hidden --ignore .git -l -g ""' " 
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, {'options': ['-i']}, <bang>0)
 
+" Updates Ag command to search hidden files as well
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, '--hidden', <bang>0)
+
 :nmap <leader>f :Files<enter>
 :nmap <leader>d :Lines<enter>
 
 " gbrowse
-:nmap <leader>i :.Gbrowse<enter>
+:nmap <leader>i :.GBrowse<enter>
 
 "line indentation markers
 " let g:indentLine_setColors = 0
@@ -223,11 +227,11 @@ Plugin 'tpope/vim-rails'
 Plugin 'djoshea/vim-autoread' " Auto read files when they change
 
 " Silver searcher plugins:
-Plugin 'mileszs/ack.vim'
+"Plugin 'mileszs/ack.vim'
 "let g:ackprg = 'ag --nogroup --nocolor --column'
 "let g:ackprg = 'ag --vimgrep'
 "let g:ackprg = 'ag --hidden --ignore'
-let g:ag_prg = 'ag --hidden --ignore'
+"let g:ag_prg = 'ag --hidden --ignore'
 
 "Derek autocomplete:
 "nvim-compe, must have nvim 0.5. brew install --head neovim
