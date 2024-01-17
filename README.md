@@ -3,7 +3,8 @@ Steps:
   - copy alacritty.yml file to ~/.config/alacritty/alacritty.toml
   - Run /Applications/Alacritty.app/Contents/MacOS/alacritty migrate
 2) Install Oh My ZSH https://ohmyz.sh/#install
-3) Install Vim: "brew install neovim" 
+3) Install Ag https://github.com/ggreer/the_silver_searcher
+4) Install Vim: "brew install neovim" 
   - copy init.vim vile to ~/.config/nvim/init.vim
   - install python3:  python3 -m pip install --user --upgrade pynvim)
   - install vundle (https://github.com/VundleVim/Vundle.vim) & run :PluginInstall
